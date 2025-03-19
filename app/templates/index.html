@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}System Biblioteczny - Strona główna{% endblock %}
+
+{% block content %}
+    <h1>System Informatyczny Biblioteki</h1>
+    
+    <p>Witaj w systemie informatycznym biblioteki. System umożliwia zarządzanie książkami w bibliotece.</p>
+    
+    <h2>Funkcjonalności systemu:</h2>
+    <ul>
+        <li>Przeglądanie listy wszystkich książek</li>
+        <li>Dodawanie nowych książek</li>
+        <li>Usuwanie książek</li>
+        <li>Aktualizacja stanu książek (wypożyczenie/zwrot)</li>
+    </ul>
+    
+    <h2>Szybki dostęp:</h2>
+    <p>
+        <a href="/books" class="btn">Lista książek</a>
+        <a href="/books/add" class="btn btn-success">Dodaj nową książkę</a>
+    </p>
+{% endblock %}

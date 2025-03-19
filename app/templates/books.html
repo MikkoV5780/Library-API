@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}System Biblioteczny - Lista książek{% endblock %}
+
+{% block content %}
+    <h1>Lista książek</h1>
+    
+    <div style="margin-bottom: 20px;">
+        <form method="get" action="/books">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <div>
+                    <label for="is_borrowed">Status:</label>
+                    <select name="is_borrowed" id="is_borrowed">
+                        <option value="" {% if is_borrowed is none %}selected{% endif %}>Wszystkie</option>
+                        <option value="true" {% if is_borrowed == true %}selected{% endif %}>Wypożyczone</option>
+                        <option value="false" {% if is_borrowed == false %}selected{% endif %}>Dostępne</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Filtruj</button>
+            </div>
+        </form>
+    </div>
+    
+    {% if books %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nr seryjny</th>
+                    <th>Tytuł</th>
+                    <th>Autor</th>
+                    <th>Status</th>
+                    <th>Data wypożyczenia</th>
+                    <th>Nr karty wypożyczającego</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr {% if book.is_borrowed %}class="book-borrowed"{% endif %}>
+                        <td>{{ book.serial_number }}</td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>
+                            {% if book.is_borrowed %}
+                                <span class="book-status status-borrowed">Wypożyczona</span>
+                            {% else %}
+                                <span class="book-status status-available">Dostępna</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ book.borrowed_date or '-' }}</td>
+                        <td>{{ book.borrower_id or '-' }}</td>
+                        <td class="action-buttons">
+                            {% if book.is_borrowed %}
+                                <form method="post" action="/books/{{ book.serial_number }}/return">
+                                    <button type="submit" class="btn btn-success btn-fixed-width">Zwróć</button>
+                                </form>
+                            {% else %}
+                                <form method="get" action="/books/{{ book.serial_number }}/borrow">
+                                    <button type="submit" class="btn btn-fixed-width">Wypożycz</button>
+                                </form>
+                            {% endif %}
+                            <form method="post" action="/books/{{ book.serial_number }}/delete" onsubmit="return confirm('Czy na pewno chcesz usunąć tę książkę?');">
+                                <button type="submit" class="btn btn-danger btn-fixed-width">Usuń</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Brak książek w bazie danych.</p>
+    {% endif %}
+    
+    <p>
+        <a href="/books/add" class="btn btn-success">Dodaj nową książkę</a>
+    </p>
+{% endblock %}

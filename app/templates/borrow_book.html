@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}System Biblioteczny - Wypożycz książkę{% endblock %}
+
+{% block content %}
+    <h1>Wypożycz książkę</h1>
+    
+    <div class="form-group">
+        <p><strong>Numer seryjny:</strong> {{ book.serial_number }}</p>
+        <p><strong>Tytuł:</strong> {{ book.title }}</p>
+        <p><strong>Autor:</strong> {{ book.author }}</p>
+    </div>
+    
+    <form method="post" action="/books/{{ book.serial_number }}/borrow">
+        <div class="form-group">
+            <label for="borrower_id">Numer karty bibliotecznej wypożyczającego (6 cyfr):</label>
+            <input type="number" id="borrower_id" name="borrower_id" min="100000" max="999999" required>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Wypożycz</button>
+            <a href="/books" class="btn">Anuluj</a>
+        </div>
+    </form>
+{% endblock %}

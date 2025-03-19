@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}System Biblioteczny{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <a href="/" {% if active_page == 'home' %}class="active"{% endif %}>Strona główna</a>
+            <a href="/books" {% if active_page == 'books' %}class="active"{% endif %}>Lista książek</a>
+            <a href="/books/add" {% if active_page == 'add_book' %}class="active"{% endif %}>Dodaj książkę</a>
+        </div>
+        
+        {% if message %}
+            <div class="alert alert-{{ message_type }}">
+                {{ message }}
+            </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
